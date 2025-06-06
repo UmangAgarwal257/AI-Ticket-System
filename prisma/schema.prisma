@@ -1,0 +1,53 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  role      Role     @default(USER)
+  skills    String[]
+  createdAt DateTime @default(now())
+  
+  createdTickets  Ticket[] @relation("CreatedBy")
+  assignedTickets Ticket[] @relation("AssignedTo")
+  
+  @@map("users")
+}
+
+model Ticket {
+  id             String    @id @default(cuid())
+  title          String
+  description    String
+  status         String    @default("TODO")
+  priority       String
+  deadline       DateTime
+  helpfulNotes   String
+  relatedSkills  String[]
+  createdAt      DateTime  @default(now())
+  
+  createdById    String
+  assignedToId   String?
+  
+  createdBy      User      @relation("CreatedBy", fields: [createdById], references: [id])
+  assignedTo     User?     @relation("AssignedTo", fields: [assignedToId], references: [id])
+  
+  @@map("tickets")
+}
+
+enum Role {
+  USER
+  MODERATOR
+  ADMIN
+}
