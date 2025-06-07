@@ -8,11 +8,11 @@ export const onSignup = inngest.createFunction(
   { event: "user/signup" },
   async ({ event , step  }) => {
     try {
-        const { userId } = event.data
+        const { email } = event.data
 
         const user = await step.run("get-user-email", async () => {
             const userObject =  await prismaClient.user.findUnique({
-                where: { id:userId}
+                where: { email}
             }); 
 
             if(!userObject) {

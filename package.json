@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev --turbopack",
+    "inngest:dev": "npx inngest-cli@latest dev",
+    "db:studio": "npx prisma studio",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
