@@ -31,12 +31,8 @@ export const createOrUpdateUser = async (email: string) => {
     }
 };
 
-export const updateUser = async (userId: string, data: { skills?: string[], role?: "USER" | "MODERATOR" | "ADMIN" }, userRole: string) => {
+export const updateUser = async (userId: string, data: { skills?: string[], role?: "USER" | "MODERATOR" | "ADMIN" }) => {
     try {
-        if (userRole !== "ADMIN") {
-            throw new Error("Forbidden");
-        }
-        
         return await prismaClient.user.update({
             where: { id: userId },
             data
@@ -47,12 +43,8 @@ export const updateUser = async (userId: string, data: { skills?: string[], role
     }
 };
 
-export const getUsers = async (userRole: string) => {
+export const getUsers = async () => {
     try {
-        if (userRole !== "ADMIN") {
-            throw new Error("Forbidden");
-        }
-
         return await prismaClient.user.findMany({
             select: {
                 id: true,
