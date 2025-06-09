@@ -1,6 +1,6 @@
 import { prismaClient } from "@/lib/db";
 import { inngest } from "@/lib/inngest";
-import { sendMail } from "@/lib/mailer";
+import { sendMail } from "@/utils/mailer";
 import { NonRetriableError } from "inngest";
 
 export const onSignup = inngest.createFunction(
