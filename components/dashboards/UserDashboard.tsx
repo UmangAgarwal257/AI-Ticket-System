@@ -213,12 +213,28 @@ export const UserDashboard = () => {
                                         </CardDescription>
                                     </CardHeader>
                                     <CardContent>
-                                        <div className="text-sm text-slate-500">
-                                            Created: {new Date(ticket.createdAt).toLocaleDateString()}
-                                            {ticket.assignedTo && (
-                                                <span className="ml-4">
-                                                    Assigned to: {ticket.assignedTo.email}
-                                                </span>
+                                        <div className="space-y-2">
+                                            <div className="text-sm text-slate-500">
+                                                Created: {new Date(ticket.createdAt).toLocaleDateString()}
+                                                {ticket.assignedTo && (
+                                                    <span className="ml-4">
+                                                        Assigned to: {ticket.assignedTo.email}
+                                                    </span>
+                                                )}
+                                            </div>
+                                            
+                                            {/* Show AI detected skills - helps users understand the complexity */}
+                                            {ticket.relatedSkills && ticket.relatedSkills.length > 0 && (
+                                                <div>
+                                                    <p className="text-xs text-slate-400 mb-1">AI detected skills needed:</p>
+                                                    <div className="flex flex-wrap gap-1">
+                                                        {ticket.relatedSkills.map((skill, index) => (
+                                                            <span key={index} className="px-2 py-1 bg-purple-900/50 text-purple-400 rounded text-xs">
+                                                                {skill}
+                                                            </span>
+                                                        ))}
+                                                    </div>
+                                                </div>
                                             )}
                                         </div>
                                     </CardContent>

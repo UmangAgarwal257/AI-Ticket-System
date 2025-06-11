@@ -2,8 +2,8 @@
 import { useSession } from "next-auth/react"
 import { LandingPage } from "@/components/LandingPage"
 import { UserDashboard } from "@/components/dashboards/UserDashboard"
-// import { AdminDashboard } from "@/components/dashboards/AdminDashboard"
-// import { ModeratorDashboard } from "@/components/dashboards/ModeratorDashboard"
+import { AdminDashboard } from "@/components/dashboards/AdminDashboard"
+import { ModeratorDashboard } from "@/components/dashboards/ModeratorDashboard"
 
 interface User {
     id?: string
@@ -38,8 +38,8 @@ export const AppRouter = () => {
 
   console.log(userRole)
 
-//   if (userRole === 'ADMIN') return <AdminDashboard />
-//   if (userRole === 'MODERATOR') return <ModeratorDashboard />
+  if (userRole === 'ADMIN') return <AdminDashboard />
+  if (userRole === 'MODERATOR') return <ModeratorDashboard />
   if (userRole === 'USER') return <UserDashboard />
   
   // Fallback for unknown roles
