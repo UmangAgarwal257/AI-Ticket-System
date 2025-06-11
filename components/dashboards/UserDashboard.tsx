@@ -22,6 +22,7 @@ export const UserDashboard = () => {
         priority: 'medium',
         deadline: ''
     })
+    const [error, setError] = useState<string | null>(null)
 
     useEffect(() => {
         fetchTickets()
@@ -41,8 +42,33 @@ export const UserDashboard = () => {
         }
     }
 
+    const validateForm = () => {
+        if (!formData.title.trim()) return "Title is required"
+        if (formData.title.length > 200) return "Title is too long (max 200 characters)"
+        
+        if (!formData.description.trim()) return "Description is required"
+        if (formData.description.length < 10) return "Description must be at least 10 characters"
+        if (formData.description.length > 2000) return "Description is too long (max 2000 characters)"
+        
+        if (!formData.deadline) return "Deadline is required"
+        
+        const deadlineDate = new Date(formData.deadline)
+        if (deadlineDate < new Date()) return "Deadline must be in the future"
+        
+        return null
+    }
+
     const createTicket = async (e: React.FormEvent) => {
         e.preventDefault()
+        setError(null)
+        
+        // Client-side validation
+        const validationError = validateForm()
+        if (validationError) {
+            setError(validationError)
+            return
+        }
+        
         try {
             const response = await fetch('/api/tickets', {
                 method: 'POST',
@@ -53,13 +79,16 @@ export const UserDashboard = () => {
                 })
             })
             
-            if (response.ok) {
-                setFormData({ title: '', description: '', priority: 'medium', deadline: '' })
-                setShowForm(false)
-                fetchTickets()
+            if (!response.ok) {
+                const errorData = await response.json()
+                throw new Error(errorData.error || 'Failed to create ticket')
             }
+            
+            setFormData({ title: '', description: '', priority: 'medium', deadline: '' })
+            setShowForm(false)
+            fetchTickets()
         } catch (error) {
-            console.error('Error creating ticket:', error)
+            setError(error instanceof Error ? error.message : 'An error occurred')
         }
     }
 
@@ -157,6 +186,11 @@ export const UserDashboard = () => {
                                             />
                                         </div>
                                     </div>
+                                    {error && (
+                                        <div className="bg-red-900/50 border border-red-600 text-red-300 p-3 rounded mb-4">
+                                            {error}
+                                        </div>
+                                    )}
                                     <Button
                                         type="submit"
                                         className="w-full bg-gradient-to-r from-green-600 to-emerald-600 hover:from-green-700 hover:to-emerald-700 cursor-pointer"
