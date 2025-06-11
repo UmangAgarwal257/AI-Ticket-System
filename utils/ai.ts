@@ -17,15 +17,21 @@ const analyzeTicket = async(ticket : Pick<Ticket, 'title' | 'description' >) => 
     Your job is to:
     1. Summarize the issue.
     2. Estimate its priority.
-    3. Providee helpful notes and resource links for human moderators.
+    3. Provide helpful notes and resource links for human moderators.
     4. List relevant technical skills required.
+    
+    IMPORTANT SKILLS MAPPING:
+    - Use these EXACT skill names only: ["React", "Node.js", "JavaScript", "TypeScript", "Database", "API", "Frontend", "Backend", "DevOps", "Mobile", "Testing", "Security"]
+    - Map specific technologies to broader categories:
+      * MongoDB/PostgreSQL/MySQL → "Database"
+      * Express/FastAPI/Django → "Backend"
+      * HTML/CSS → "Frontend"
+      * REST/GraphQL → "API"
     
     IMPORTANT:
     - Respond with *only* valid raw JSON.
     - Do not include markdown, code fences, comments, or any extra formatting.
-    - The format must be a raw JSON object.
-    
-    Repeat: Do not wrap your output in markdown or code fences.`,
+    - Use ONLY the predefined skill names above.`,
     })
 
     const response = await supportAgent.run(`You are a ticket triage agent. Only return a strict JSON object with no extra text, headers, or markdown.
@@ -34,16 +40,21 @@ const analyzeTicket = async(ticket : Pick<Ticket, 'title' | 'description' >) => 
 
     - summary: A short 1-2 sentence summary of the issue.
     - priority: One of "low", "medium", or "high".
-    - helpfulNotes: A detailed technical explanation that a moderator can use to solve this issue. Include useful external links or resources if possible.
-    - relatedSkills: An array of relevant skills required to solve the issue (e.g., ["React", "MongoDB"]).
+    - helpfulNotes: A detailed technical explanation that a moderator can use to solve this issue.
+    - relatedSkills: An array of skills from this EXACT list only: ["React", "Node.js", "JavaScript", "TypeScript", "Database", "API", "Frontend", "Backend", "DevOps", "Mobile", "Testing", "Security"]
 
-    Respond ONLY in this JSON format and do not include any other text or markdown in the answer:
+    EXAMPLES:
+    - Database connection issue → ["Database", "Backend"]
+    - React component not rendering → ["React", "Frontend", "JavaScript"]  
+    - API authentication failing → ["API", "Backend", "Security"]
+
+    Respond ONLY in this JSON format:
 
     {
     "summary": "Short summary of the ticket",
-    "priority": "high",
+    "priority": "high", 
     "helpfulNotes": "Here are useful tips...",
-    "relatedSkills": ["React", "Node.js"]
+    "relatedSkills": ["React", "Frontend"]
     }
 
     ---
