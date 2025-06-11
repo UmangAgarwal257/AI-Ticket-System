@@ -1,10 +1,9 @@
-// import { Dashboard } from "@/components/Dashboard";
-import { LandingPage } from "@/components/LandingPage";
+import { AppRouter } from "@/components/AppRouter";
 
 export default function Home() {
   return (
-    <div className="text-2xl">
-      <LandingPage/>
+    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 text-white relative overflow-hidden">
+      <AppRouter/>
     </div>
   );
 }
