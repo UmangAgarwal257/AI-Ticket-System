@@ -1,9 +1,10 @@
-import { Appbar } from "@/components/Appbar";
+// import { Dashboard } from "@/components/Dashboard";
+import { LandingPage } from "@/components/LandingPage";
 
 export default function Home() {
   return (
     <div className="text-2xl">
-      <Appbar/>
+      <LandingPage/>
     </div>
   );
 }
